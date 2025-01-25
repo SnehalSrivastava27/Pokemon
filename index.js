@@ -6,6 +6,32 @@ const context=canvas.getContext('2d');
 console.log(canvas);
 context.fillStyle='white';
 context.fillRect(0,0,canvas.width,canvas.height);
+
+// Iterate through collission for loop
+let collisionMap=[];
+for(let i=0;i<collision.length;i=i+70)
+{
+    collisionMap.push(collision.slice(i,i+70));
+}
+
+console.log(collisionMap);
+
+class Boundary{
+    constructor({position})
+    {
+        this.position=position
+        this.width=48
+        this.height=48 // we have imported 400% map
+
+    }
+    draw()
+    {
+        context.fillStyle='red';
+        context.fillRect(this.position.x,this.position.y,this.width,this.height);
+    }
+}
+
+
 // X Position hoti phli and 2nd Y position 3rd pos kitna white 4th pos kitni height
 
 const image=new Image();
@@ -152,3 +178,6 @@ window.addEventListener('keyup',(e)=>{
     }
 
 })
+
+
+
