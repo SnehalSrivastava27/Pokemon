@@ -63,6 +63,9 @@ console.log(image);
 
 const playerImage=new Image();
 playerImage.src='./Images/playerDown.png';
+
+const fore= new Image();
+fore.src='./Images/Foreground1.png'
 // context.drawImage(image,0,0);
 // This will not display in this way because image is 
 // large in size and takes lot of time to load
@@ -106,6 +109,15 @@ const background=new Sprite(
             y:offset.y
         },
         image:image
+    }
+)
+const foreground=new Sprite(
+    {
+        position:{
+            x:offset.x,
+            y:offset.y
+        },
+        image:fore
     }
 )
 const pW=192; //player width
@@ -160,7 +172,7 @@ const keys={
 
 }
 
-const movables=[background,...boundaries]
+const movables=[background,...boundaries,foreground]
 function rectCollision({rect1,rect2})
 {
     return ((rect1.position.x+rect1.width>=rect2.position.x) && 
@@ -180,6 +192,7 @@ function animate() // Ye function Bahut Imp role play krega
     })
     // testBoundary.draw();
     player.draw();
+    foreground.draw();
     // check collission
     // if((player.position.x+player.width>=testBoundary.position.x) && 
     //     (player.position.x<=testBoundary.position.x+testBoundary.width) &&
