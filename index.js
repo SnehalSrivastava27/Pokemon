@@ -309,6 +309,18 @@ window.addEventListener('keydown',(e)=>{
         case 'd':
             keys.d.pressed=true;
             break;
+        case 'W':
+            keys.w.pressed=true;
+            break;
+        case 'A':
+            keys.a.pressed=true;
+            break;
+        case 'S':
+            keys.s.pressed=true;
+            break;
+        case 'D':
+            keys.d.pressed=true;
+
     }
 
 })
