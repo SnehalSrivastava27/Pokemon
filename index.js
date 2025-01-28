@@ -66,27 +66,38 @@ playerImage.src='./Images/playerDown.png';
 
 const fore= new Image();
 fore.src='./Images/Foreground1.png'
+
+const playerUp=new Image();
+playerUp.src='./Images/playerUp.png';
+
+const playerLeft=new Image();
+playerLeft.src='./Images/playerLeft.png';
+
+const playerRight=new Image();
+playerRight.src='./Images/playerRight.png';
 // context.drawImage(image,0,0);
 // This will not display in this way because image is 
 // large in size and takes lot of time to load
 
 class Sprite{
-    constructor( {position,image,frames={ max:1 }})
+    constructor( {position,image,frames={ max:1 },Sprites})
     {
         this.position=position;
         this.image = image;
-        this.frames=frames;
+        this.frames={...frames,val :0,elapsed:0};
         this.image.onload=()=>{
             this.width=this.image.width/this.frames.max;
             this.height=this.image.height;
         }
+        this.moving=false;
+        this.Sprites=Sprites;
     }
     draw()
     {
         // context.drawImage(this.image,this.position.x,this.position.y); issue was here
         context.drawImage(
             this.image,
-            0,                          // Source x
+            this.frames.val*this.width,                          // Source x
             0,                          // Source y
             this.image.width/this.frames.max,          // Source width
             this.image.height,         // Source height
@@ -95,7 +106,24 @@ class Sprite{
             this.image.width/this.frames.max,          // Destination width
             this.image.height         // Destination height
         );
+        if(this.moving)
+        {
+        if(this.frames.max>1)
+        {
+            this.frames.elapsed++;
+        }
+        if(this.frames.elapsed%10===0)
+        {
+            if(this.frames.val<this.frames.max-1)
+                {
+                    this.frames.val++;
+                }
+                else{
+                    this.frames.val=0;
+                }
+        }
     }
+}
 }
 
 
@@ -131,6 +159,12 @@ const player=new Sprite(
         image:playerImage,
         frames:{
             max:4,
+        },
+        Sprites:{
+            up: playerUp,
+            left:playerLeft,
+            right:playerRight,
+            down:playerImage,
         }
     }
 )
@@ -203,8 +237,11 @@ function animate() // Ye function Bahut Imp role play krega
     //     console.log("collide");
     // }
     let moving=true;
+    player.moving=false;
     if(keys.w.pressed)
-        {   
+        {       
+            player.moving=true;
+            player.image=player.Sprites.up;
             for(let i=0;i<boundaries.length;i++)
                 {
                     const boundary=boundaries[i];
@@ -227,6 +264,8 @@ function animate() // Ye function Bahut Imp role play krega
         } 
     if(keys.d.pressed)
         {
+            player.moving=true;
+            player.image=player.Sprites.right;
             for(let i=0;i<boundaries.length;i++)
             {
                 const boundary=boundaries[i];
@@ -250,6 +289,8 @@ function animate() // Ye function Bahut Imp role play krega
         }  
     if(keys.a.pressed)
     {   
+        player.moving=true;
+        player.image=player.Sprites.left;
         for(let i=0;i<boundaries.length;i++)
             {
                 const boundary=boundaries[i];
@@ -272,6 +313,8 @@ function animate() // Ye function Bahut Imp role play krega
     }
     if(keys.s.pressed)
     {
+        player.moving=true;
+        player.image=player.Sprites.down;
         for(let i=0;i<boundaries.length;i++)
             {
                 const boundary=boundaries[i];
@@ -331,6 +374,7 @@ window.addEventListener('keyup',(e)=>{
     {
         case 'w':
             keys.w.pressed=false;
+            // player.moving=false;
             break;
         case 'a':
             keys.a.pressed=false;
