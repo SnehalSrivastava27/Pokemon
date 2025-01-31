@@ -4,7 +4,7 @@ canvas.height=576;
 // This Gonna Gives us 16:9 Ratio Perfect
 const context=canvas.getContext('2d');
 console.log(canvas);
-context.fillStyle='white';
+// context.fillStyle='white';
 context.fillRect(0,0,canvas.width,canvas.height);
 
 // Iterate through collission for loop
@@ -14,7 +14,15 @@ for(let i=0;i<collision.length;i=i+70)
     collisionMap.push(collision.slice(i,i+70));
 }
 
-console.log(collisionMap);
+// console.log(collisionMap);
+
+
+let battleZonesMap=[];
+for(let i=0;i<battleZonesData.length;i=i+70)
+{
+    battleZonesMap.push(battleZonesData.slice(i,i+70));
+}
+console.log(battleZonesMap);
 
 class Boundary{
     static width=48;
@@ -53,6 +61,25 @@ collisionMap.forEach((row,i)=>{
 })
 })
 console.log(boundaries);
+
+let battleZones=[];
+battleZonesMap.forEach((row,i)=>{
+    row.forEach((s,j)=>{
+        if(s===1025){
+        battleZones.push (new Boundary(
+            {
+                position:{
+                    x:j*Boundary.width+offset.x,
+                    y:i*Boundary.height+offset.y,
+                }
+            }
+        ))
+    }
+})
+})
+console.log("battle");
+console.log(battleZones);
+
 
 
 // X Position hoti phli and 2nd Y position 3rd pos kitna white 4th pos kitni height
@@ -222,7 +249,10 @@ function animate() // Ye function Bahut Imp role play krega
     // context.drawImage(image,-750,-550);
     background.draw();
     boundaries.forEach((boundary)=>{
-        // w
+        boundary.draw();
+    })
+    battleZones.forEach((b)=>{
+        b.draw();
     })
     // testBoundary.draw();
     player.draw();
