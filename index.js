@@ -268,6 +268,8 @@ function animate() // Ye function Bahut Imp role play krega
     // {
     //     console.log("collide");
     // }
+    let moving=true;
+    player.moving=false;
     if(battle.initiated){
         return;
     }
@@ -293,8 +295,7 @@ function animate() // Ye function Bahut Imp role play krega
             }
     }
 
-    let moving=true;
-    player.moving=false;
+ 
     if(keys.w.pressed)
         {       
             player.moving=true;
