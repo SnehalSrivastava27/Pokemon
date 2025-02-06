@@ -233,7 +233,7 @@ const keys={
 
 }
 
-const movables=[background,...boundaries,foreground]
+const movables=[background,...boundaries,foreground,...battleZones]
 function rectCollision({rect1,rect2})
 {
     return ((rect1.position.x+rect1.width>=rect2.position.x) && 
@@ -242,7 +242,9 @@ function rectCollision({rect1,rect2})
         (rect1.position.y+rect1.height>=rect2.position.y)
     )
 }
-
+const battle={
+    initiated:false,
+}
 function animate() // Ye function Bahut Imp role play krega
 {
     window.requestAnimationFrame(animate);
@@ -266,6 +268,31 @@ function animate() // Ye function Bahut Imp role play krega
     // {
     //     console.log("collide");
     // }
+    if(battle.initiated){
+        return;
+    }
+    if(keys.w.pressed||keys.d.pressed||keys.a.pressed||keys.s.pressed)
+    {
+        for(let i=0;i<battleZones.length;i++)
+            {
+                const battleZone=battleZones[i];
+                const overLapArea=(Math.min(player.position.x+player.width,battleZone.position.x+battleZone.width)
+                -Math.max(player.position.x,battleZone.position.x))*
+                (Math.min(player.position.y+player.height,battleZone.position.y+battleZone.height)
+                -Math.max(player.position.y,battleZone.position.y));
+                if(rectCollision({rect1:player,
+                    rect2:battleZone
+                }
+                )&& overLapArea>(player.width*player.height)/2 && Math.random()<0.04
+                )
+                    {
+                        battle.initiated=true;
+                        console.log("colide bz");
+                        break;
+                    }
+            }
+    }
+
     let moving=true;
     player.moving=false;
     if(keys.w.pressed)
