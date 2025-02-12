@@ -36,7 +36,7 @@ class Boundary{
     }
     draw()
     {
-        context.fillStyle='red';
+        context.fillStyle='rgb(255,0,0,0)'; //opacity yaha se
         context.fillRect(this.position.x,this.position.y,this.width,this.height);
     }
 }
@@ -247,7 +247,7 @@ const battle={
 }
 function animate() // Ye function Bahut Imp role play krega
 {
-    window.requestAnimationFrame(animate);
+    const animationId=window.requestAnimationFrame(animate);
     // context.drawImage(image,-750,-550);
     background.draw();
     boundaries.forEach((boundary)=>{
@@ -289,6 +289,28 @@ function animate() // Ye function Bahut Imp role play krega
                 )
                     {
                         battle.initiated=true;
+                        window.cancelAnimationFrame(animationId);
+                        gsap.to('#OverLappingDiv',{
+                            opacity:1,
+                            repeat:3,
+                            yoyo:true,
+                            duration:0.35,
+                            onComplete(){
+                                gsap.to('#OverLappingDiv',{
+                                    opacity:1,
+                                    duration:0.4,
+                                    onComplete()
+                                    {   
+                                        animateBattle();
+                                        gsap.to('#OverLappingDiv',{
+                                            opacity:0,
+                                            duration:0.4
+                                        })
+                                    }
+
+                                })
+                            }
+                        })
                         console.log("colide bz");
                         break;
                     }
@@ -395,6 +417,22 @@ function animate() // Ye function Bahut Imp role play krega
     }
 }
 animate();
+
+const battleBackgroundImage= new Image();
+battleBackgroundImage.src='./Images/battleBackground.png';
+const battleBackground=new Sprite({
+    position:{
+        x:0,
+        y:0
+    },
+    image:battleBackgroundImage
+})
+function animateBattle()
+{
+    window.requestAnimationFrame(animateBattle);
+    battleBackground.draw();
+    console.log("transition");
+}
 window.addEventListener('keydown',(e)=>{
     switch(e.key)
     {
