@@ -2,6 +2,9 @@
    body {
     background-color: black;
     }
+    h1{
+        margin: 0;
+    }
 </style>
 <head>
     <title>Pokemon</title>
@@ -13,6 +16,29 @@
         opacity: 0;
         pointer-events: none; "></div>
         <canvas></canvas>
+    <div style="background-color: white;
+    height: 120px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 4px black solid;
+    display: flex;"
+    >
+    <div style="width: 66.6%;
+    display: grid; grid-template-columns: repeat(2,1fr);">
+        <button>Attack 1</button>
+        <button>Attack 2</button>
+        <!-- <button>Attack 3</button>
+        <button>Attack 4</button> -->
+    </div>
+    <div style="display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    width: 33.33%;">
+        <h1>Attack Type</h1>
+    </div>
+    </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" 
     integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" 
