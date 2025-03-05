@@ -440,14 +440,28 @@ const draggle = new Sprite({
     },
     animate:true
 })
+const embyImage=new Image();
+embyImage.src='./Images/embySprite.png'
+const emby = new Sprite({
+    position:{
+        x:280,
+        y:300
+    },
+    image: embyImage,
+    frames:{
+        max:4
+    },
+    animate:true
+})
 function animateBattle()
 {
     window.requestAnimationFrame(animateBattle);
     battleBackground.draw();
     draggle.draw();
+    emby.draw();
     console.log("transition");
 }
-// animateBattle();
+animateBattle();
 window.addEventListener('keydown',(e)=>{
     switch(e.key)
     {
