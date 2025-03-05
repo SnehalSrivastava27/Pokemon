@@ -416,7 +416,7 @@ function animate() // Ye function Bahut Imp role play krega
             }
     }
 }
-animate();
+//animate();
 
 const battleBackgroundImage= new Image();
 battleBackgroundImage.src='./Images/battleBackground.png';
@@ -427,12 +427,26 @@ const battleBackground=new Sprite({
     },
     image:battleBackgroundImage
 })
+const draggleImage=new Image();
+draggleImage.src='./Images/draggleSprite.png'
+const draggle = new Sprite({
+    position:{
+        x:800,
+        y:100
+    },
+    image: draggleImage,
+    frames:{
+        max:4
+    }
+})
 function animateBattle()
 {
     window.requestAnimationFrame(animateBattle);
     battleBackground.draw();
+    draggle.draw();
     console.log("transition");
 }
+animateBattle();
 window.addEventListener('keydown',(e)=>{
     switch(e.key)
     {
