@@ -107,7 +107,7 @@ playerRight.src='./Images/playerRight.png';
 // large in size and takes lot of time to load
 
 class Sprite{
-    constructor( {position,image,frames={ max:1, hold:10 },Sprites,animate=false})
+    constructor( {position,image,frames={ max:1, hold:10 },Sprites,animate=false,enemy=false})
     {
         this.position=position;
         this.image = image;
@@ -118,10 +118,15 @@ class Sprite{
         }
         this.animate=animate;
         this.Sprites=Sprites;
+        this.opacity=1;
+        this.health=100;
+        this.enemy=enemy;
     }
     draw()
     {
         // context.drawImage(this.image,this.position.x,this.position.y); issue was here
+        context.save();
+        context.globalAlpha=this.opacity;
         context.drawImage(
             this.image,
             this.frames.val*this.width,                          // Source x
@@ -150,7 +155,44 @@ class Sprite{
                 }
         }
     }
-}
+    }
+    attack({attack,recipient})
+    {
+        const t=gsap.timeline();
+        let movement=20;
+        this.health=this.health-attack.damage;
+        let healthBar='#enemyHealth';
+        if(this.enemy)
+        {
+            movement=-20;
+            healthBar='#playerHealth';
+        }
+        t.to(this.position,{
+            x:this.position.x - movement,
+        }).to(this.position,{
+            x:this.position.x+ movement*2,
+            duration:0.1,
+            onComplete:()=>
+            {
+                gsap.to(healthBar,{
+                    width:this.health+'%'
+                })
+                gsap.to(recipient.position,{
+                    x:recipient.position.x+20,
+                    yoyo:true,
+                    repeat:3,
+                })
+                gsap.to(recipient,{
+                    opacity:0,
+                    repeat:5,
+                    yoyo:true,
+                    duration:0.07
+                })
+            }
+        }).to(this.position,{
+            x:this.position.x
+        })
+    }
 }
 
 
@@ -438,7 +480,8 @@ const draggle = new Sprite({
     frames:{
         max:4
     },
-    animate:true
+    animate:true,
+    enemy:true
 })
 const embyImage=new Image();
 embyImage.src='./Images/embySprite.png'
@@ -461,7 +504,30 @@ function animateBattle()
     emby.draw();
     console.log("transition");
 }
-animateBattle();
+animateBattle(); 
+
+document.getElementById("tackle").addEventListener("click",()=>
+{
+     emby.attack({
+        attack:{
+            name:'Tackle',
+            damage:10,
+            type:'Normal'
+        },
+        recipient:draggle
+     });
+});
+// document.getElementById("tackle").addEventListener("click",()=>
+//     {
+//          draggle.attack({
+//             attack:{
+//                 name:'Tackle',
+//                 damage:10,
+//                 type:'Normal'
+//             },
+//             recipient:emby
+//          });
+//     });
 window.addEventListener('keydown',(e)=>{
     switch(e.key)
     {

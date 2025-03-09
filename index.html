@@ -16,14 +16,14 @@
         opacity: 0;
         pointer-events: none; "></div>
          <!-- Draggle health -->
-        <div style="background-color: white; width: 250px;  position: absolute;
+        <div  style="background-color: white; width: 250px;  position: absolute;
         top:50px;
         left: 50px;
         border: 4px black solid;
         padding: 12px">
             <h1 style=" font-size: 24px">Draggle</h1>
             <div style="height: 5px; background-color: gray; margin-top: 10px;">
-                <div style="height: 5px; background-color: lightgreen;top:0; left: 0; right: 0;"></div>
+                <div id="enemyHealth" style="height: 5px; background-color: lightgreen;top:0; left: 0; right: 0;"></div>
             </div>
             
         </div>
@@ -35,7 +35,7 @@
         padding: 12px">
             <h1 style=" font-size: 24px">Emby</h1>
             <div style="height: 5px; background-color: gray; margin-top: 10px;">
-                <div style="height: 5px; background-color: lightgreen;top:0; left: 0; right: 0;"></div>
+                <div id="playerHealth" style="height: 5px; background-color: lightgreen;top:0; left: 0; right: 0;"></div>
             </div>
             
         </div>
@@ -53,7 +53,7 @@
     >
     <div style="width: 66.6%;
     display: grid; grid-template-columns: repeat(2,1fr);">
-        <button>Attack 1</button>
+        <button id="tackle">Tackle</button>
         <button>Attack 2</button>
         <!-- <button>Attack 3</button>
         <button>Attack 4</button> -->
