@@ -1,4 +1,5 @@
 const canvas =document.querySelector('canvas');
+let renderSprite=[];
 canvas.width=1024;
 canvas.height=576;
 // This Gonna Gives us 16:9 Ratio Perfect
@@ -156,42 +157,91 @@ class Sprite{
         }
     }
     }
-    attack({attack,recipient})
+    attack({attack,recipient,renderSprite})
     {
-        const t=gsap.timeline();
         let movement=20;
         this.health=this.health-attack.damage;
         let healthBar='#enemyHealth';
-        if(this.enemy)
+        switch (attack.name)
         {
-            movement=-20;
-            healthBar='#playerHealth';
+            case 'Fireball':
+                const FireballImage=new Image();
+                FireballImage.src='./Images/fireball.png';
+                const fireball=new Sprite(
+                    {
+                        position:{
+                            x:this.position.x,
+                            y:this.position.y,
+                        },
+                        image:FireballImage,
+                        frames:{
+                            max:4,
+                            hold:10
+                        },
+                        animate:true
+                    }
+                )
+                renderSprite.push(fireball);
+                console.log(renderSprite);
+                gsap.to(fireball.position,{
+                    x:recipient.position.x,
+                    y:recipient.position.y,
+                    onComplete:()=>{
+                        renderSprite.pop();
+                            gsap.to(healthBar,{
+                                width:this.health+'%'
+                            })
+                            gsap.to(recipient.position,{
+                                x:recipient.position.x+20,
+                                yoyo:true,
+                                repeat:3,
+                            })
+                            gsap.to(recipient,{
+                                opacity:0,
+                                repeat:5,
+                                yoyo:true,
+                                duration:0.07
+                            })
+                        }
+                })
+            break;
+            case 'Tackle':
+                const t=gsap.timeline();
+                if(this.enemy)
+                {
+                    movement=-20;
+                    healthBar='#playerHealth';
+                }
+                t.to(this.position,{
+                    x:this.position.x - movement,
+                }).to(this.position,{
+                    x:this.position.x+ movement*2,
+                    duration:0.1,
+                    onComplete:()=>
+                    {
+                        gsap.to(healthBar,{
+                            width:this.health+'%'
+                        })
+                        gsap.to(recipient.position,{
+                            x:recipient.position.x+20,
+                            yoyo:true,
+                            repeat:3,
+                        })
+                        gsap.to(recipient,{
+                            opacity:0,
+                            repeat:5,
+                            yoyo:true,
+                            duration:0.07
+                        })
+                    }
+                }).to(this.position,{
+                    x:this.position.x
+                })
+            break;
+
+
         }
-        t.to(this.position,{
-            x:this.position.x - movement,
-        }).to(this.position,{
-            x:this.position.x+ movement*2,
-            duration:0.1,
-            onComplete:()=>
-            {
-                gsap.to(healthBar,{
-                    width:this.health+'%'
-                })
-                gsap.to(recipient.position,{
-                    x:recipient.position.x+20,
-                    yoyo:true,
-                    repeat:3,
-                })
-                gsap.to(recipient,{
-                    opacity:0,
-                    repeat:5,
-                    yoyo:true,
-                    duration:0.07
-                })
-            }
-        }).to(this.position,{
-            x:this.position.x
-        })
+      
     }
 }
 
@@ -503,6 +553,9 @@ function animateBattle()
     draggle.draw();
     emby.draw();
     console.log("transition");
+    renderSprite.forEach((s)=>{
+        s.draw();
+    })
 }
 animateBattle(); 
 
@@ -517,6 +570,18 @@ document.getElementById("tackle").addEventListener("click",()=>
         recipient:draggle
      });
 });
+document.getElementById("Fireball").addEventListener("click",()=>
+    {
+         emby.attack({
+            attack:{
+                name:'Fireball',
+                damage:25,
+                type:'Fire'
+            },
+            recipient:draggle,
+            renderSprite: renderSprite,
+         });
+    });
 // document.getElementById("tackle").addEventListener("click",()=>
 //     {
 //          draggle.attack({
